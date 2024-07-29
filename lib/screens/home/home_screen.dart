@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_app/constants.dart';
 
+import '../../Provider/provide.dart';
 import '../../models/Product.dart';
 import '../details/details_screen.dart';
 import 'components/categorries.dart';
@@ -10,6 +12,7 @@ import 'components/item_card.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ECommerceProvider eCommerceProvider = Provider.of<ECommerceProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -54,22 +57,48 @@ class HomeScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
               child: GridView.builder(
-                itemCount: products.length,
+                itemCount: eCommerceProvider.eCommerceModel!.products.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: kDefaultPaddin,
                   crossAxisSpacing: kDefaultPaddin,
                   childAspectRatio: 0.75,
                 ),
-                itemBuilder: (context, index) => ItemCard(
-                  product: products[index],
-                  press: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DetailsScreen(
-                        product: products[index],
+                itemBuilder: (context, index) => GestureDetector(
+                  onTap: () {
+                    selectpro=index;
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailsScreen(),));
+
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.all(kDefaultPaddin),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            image: DecorationImage(image: NetworkImage(eCommerceProvider.eCommerceModel!.products[index].images[0]))
+                          ),
+                          // child: Hero(
+                          //   tag: "${eCommerceProvider.eCommerceModel!.products[index].id}",
+                          //   child: Image.network(eCommerceProvider.eCommerceModel!.products[index].images[index]),
+                          // ),
+                        ),
                       ),
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: kDefaultPaddin / 4),
+                        child: Text(
+                          // products is out demo list
+                          eCommerceProvider.eCommerceModel!.products[index].title,
+                          style: TextStyle(color: kTextLightColor),
+                        ),
+                      ),
+                      Text(
+                        "\$${eCommerceProvider.eCommerceModel!.products[index].price}",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )
+                    ],
                   ),
                 ),
               ),
@@ -80,3 +109,5 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
+int selectpro=0;

@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
 
+import 'Provider/provide.dart';
+
 void main() {
-  runApp(MyApp());
+  runApp(MultiProvider(
+
+    providers: [
+      ChangeNotifierProvider(create: (context) => ECommerceProvider()),
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
