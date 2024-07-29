@@ -138,6 +138,7 @@ class DetailsScreen extends StatelessWidget {
                               .copyWith(color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: kDefaultPaddin),
+
                         Row(
                           children: <Widget>[
                             RichText(
